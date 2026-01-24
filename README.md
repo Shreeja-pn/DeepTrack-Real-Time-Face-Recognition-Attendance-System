@@ -63,7 +63,7 @@ DeepTrack/
 
 1️⃣ Clone the Repository
 
-git clone https://github.com/your-username/DeepTrack.git
+git clone https://github.com
 cd DeepTrack
 
 2️⃣ Install Dependencies
