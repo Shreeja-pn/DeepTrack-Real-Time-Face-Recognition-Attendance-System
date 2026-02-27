@@ -1,103 +1,154 @@
-DeepTrack – Real-Time Face Recognition Attendance System 🎯
+# 🎓 Face Recognition Attendance System
 
-📌 Overview
+A robust, bilingual, real-time face recognition-based attendance system using YOLOv8, DeepFace, TensorFlow, and OpenCV. This project supports both **real-time webcam-based** tracking and **video file-based** pipelines with Region of Interest (ROI), logging, frame skipping, and CSV-based attendance.
 
-DeepTrack is a real-time face recognition–based attendance system that detects and recognizes faces from live video streams. It uses deep learning models to automatically mark attendance and send confirmation emails to students, reducing manual effort and errors.
+![preview](https://github.com/yashbisht077/DeepTrack/blob/main/Image.png?raw=true)
 
-The system integrates **YOLOv8** for fast face detection and **DeepFace** for accurate face recognition using facial embeddings and similarity thresholds.
+---
 
-🚀 Features
+## 🚀 Project Structure
 
-* Real-time face detection using webcam or video input
-* Accurate face recognition using deep learning embeddings
-* Automatic attendance marking
-* 📧 Attendance confirmation emails sent to students
-* Supports multiple face detection in a single frame
-* Scalable and modular project structure
+### 1. `Deep Track Prototype` (Webcam-based)
 
-🛠️ Tech Stack
+**Pipeline:**
+- Real-time webcam feed.
+- Face detection: `face_recognition`.
+- Feature extraction: `DeepFace.represent()`.
+- Identity prediction: Pretrained TensorFlow model.
+- Attendance CSV generation with name and timestamp.
 
-* **Programming Language:** Python
-* **Face Detection:** YOLOv8
-* **Face Recognition:** DeepFace
-* **Computer Vision:** OpenCV
-* **Deep Learning Frameworks:** TensorFlow / PyTorch
-* **Email Service:** SMTP (Python email libraries)
-* **Data Handling:** NumPy, Pandas
+**Highlights:**
+- Real-time accuracy.
+- Simple pipeline to test live tracking.
+- CSV output: `attendance.csv`
 
-📂 Project Structure
+---
 
-DeepTrack/
-│── core1/
-│   ├── face_detection.py
-│   ├── face_recognition.py
-│   ├── embeddings/
-│── data/
-│   ├── known_faces/
-│   ├── attendance.csv
-│── utils/
-│── email_service.py
-│── requirements.txt
-│── main.py
-│── README.md
+### 2. `Core 1` (Video + YOLO + DeepFace)
 
+**Pipeline:**
+- Input: Pre-recorded video file.
+- ROI (Region of Interest): Defined polygon mask.
+- Face detection: `YOLOv8` using `yolov11l-face.pt`.
+- Recognition: `DeepFace.find()` using cosine similarity.
+- Output: Annotated video + attendance CSV.
 
-⚙️ How It Works
+**Highlights:**
+- Supports masked region-based filtering.
+- Face matching from pre-encoded database folder.
+- Output CSV: `attendance_log.csv`.
 
-1. Capture live video input using a webcam
-2. Detect faces in each frame using YOLOv8
-3. Extract facial embeddings using DeepFace
-4. Compare embeddings with stored data using a threshold
-5. Mark attendance automatically on successful match
-6. 📧 Send attendance confirmation email to the registered student
+---
 
-📧 Email Notification System
+### 3. `Core 1 Improved` (Optimized)
 
-* Sends automatic attendance confirmation emails to students
-* Emails are triggered only after successful face recognition
-* Ensures transparency and real-time updates
-* Can be configured for institutional SMTP servers
+**Pipeline Enhancements:**
+- Faster detection using `yolov11n-face.pt`.
+- Frame skipping for performance boost.
+- Embedding caching to avoid repeated comparisons.
+- Overlay of last matched face image and label (“Present”).
+- Real-time bounding box display with names.
+- Attendance duplication prevention.
 
+**Extras:**
+- Logging with `logging` module (`logs.txt`).
+- Efficient attendance marking.
+- Output files:
+  - Annotated video: `output.mp4`
+  - Attendance CSV: `final_attendance.csv`
 
-▶️ Installation & Setup
+---
 
-1️⃣ Clone the Repository
+## 🧠 Technologies Used
 
-git clone https://github.com
-cd DeepTrack
+| Module         | Purpose                            |
+|----------------|------------------------------------|
+| `face_recognition` | Real-time face detection       |
+| `DeepFace`     | Face embeddings and identity match |
+| `YOLOv8`       | High-speed face detection          |
+| `TensorFlow`   | Custom model for identity prediction (prototype) |
+| `OpenCV`       | Video I/O, drawing, overlays       |
+| `Numpy/Pandas` | Data and CSV handling              |
+| `Logging`      | Robust debugging                   |
 
-2️⃣ Install Dependencies
+---
 
-pip install -r requirements.txt
+## 🗂️ File Structure
 
-3️⃣ Run the Project
+```plaintext
+├── deep_track_prototype.py       # Webcam-based face tracking
+├── core1.py                      # Video + YOLO + DeepFace
+├── core1_improved.py             # Optimized video pipeline
+├── known_faces/                  # Folder with known images
+├── attendance/                   # Output CSV files
+├── output/                       # Output annotated video
+├── roi_mask.npy                  # ROI polygon mask file
+├── logs.txt                      # Runtime logs
+├── model.h5                      # Trained TensorFlow model
+```
 
-python main.py
+---
 
-📊 Attendance Output
+## 🛠️ Setup Instructions
 
-* Attendance records are stored in a CSV file
-* Each student is marked only once per session
-* Email confirmation is sent immediately after marking attendance
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/yashbisht077/DeepTrack.git
+   ```
 
-💡 Use Cases
+2. **Install requirements:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-* College and school attendance systems
-* Office employee attendance
-* Secure access control systems
-* Smart surveillance and monitoring systems
+3. **Download YOLOv8 weights:**
+   - Place `yolov11l-face.pt` and `yolov11n-face.pt` in the root directory.
 
-🔮 Future Enhancements
+4. **Run pipelines:**
+   - Prototype (webcam):
+     ```bash
+     python detect_faces.py
+     ```
+   - Core 1 (video):
+     ```bash
+     python app.py
+     ```
+   - Core 1 Improved:
+     ```bash
+     python app.py
+     ```
 
-* Web-based attendance dashboard
-* Cloud database integration
-* Face mask detection support
-* Mobile application integration
-* SMS and WhatsApp notification support
+---
 
-👩‍💻 Author
+## 📝 Sample Output
 
-**Shreeja PN**
-Integrated M.Tech – Software Engineering
-VIT Vellore
+- ✅ `final_attendance.csv`:
+```
+Name,Time
+Shankar Singh,2025-07-12 09:43:21
+Anurag Singh,2025-07-12 09:44:12
+...
+```
 
+---
+
+## 📌 Future Improvements
+
+- Web-based dashboard for CSV management.
+- Real-time multi-camera support.
+- Automatic ROI calibration using perspective transform.
+- Facial spoofing detection.
+
+---
+
+## 📧 Contact
+
+**Shankar Singh**  
+📍 BTech CSE AIML @ GEHU Bhimtal  
+📧 [shankarbisht1224@gmail.com]
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. Feel free to use, modify, and contribute!
